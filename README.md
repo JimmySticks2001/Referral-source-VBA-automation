@@ -1,4 +1,4 @@
-referralSourceAutomation v0.1.1
+referralSourceAutomationFromVBA v0.1.1
 ==========================
 Written by Tim Lightfoot, TLightfoot@ntst.com, tlightfo@gmail.com
 
@@ -7,7 +7,6 @@ Version histroy
 
 #####v0.1.1 07/30/2014
 * Added unblocking the WASP.dll after copying it from the network drive.
-* Added -ExecutionPolicy Bypass to .bat file.
 
 #####v0.1.0 07/24/2014
 * Initial build.
@@ -22,8 +21,8 @@ guarantee that this script will work.
 
 What is it?
 -----------
-This is a PowerShell script that automates the referral source entry process. This is a
-standalone version that can be started by running the included runAutomator.bat file.
+This is a PowerShell script that automates the referral source entry process. This version is
+started from a button in the PF PM Data Collection Workbook.
 
 
 How is it used?
@@ -34,21 +33,18 @@ button at the top labeled 'Run Validator' listed under Step 1. This will run thr
 the importable sheets in the workbook and verify that all of the user entered data matches
 the criteria for Avatar dictionaries. After the validator has run it will report any errors
 to the user by listing them on the Error_Report sheet that it generates. If there are no 
-errors listed for referral sources, this script is ready to be run.
+errors listed for guarantors, this script is ready to be run.
 
-To run this script file double click the runAutomator.bat file located in the same directory
-as referralSourceAutomation.ps1. This will open a PowerShell window which will display the
-scripts	actions. Soon after opening the user will be presented with an open file window. Here
-the user will be able to select the PF PM Data Collection Workbook which contains the 
-validated list of referral sources that they want to import.
+To run this script file go to the Validator sheet and click on the button labeled 'Run 
+automated referral source entry'. This will open a PowerShell window which will display the
+scripts	actions.
 
-After the user has selected the PF PM Data Collection Workbook the script will run for a few
-seconds and will eventually display a message box instructing the user to open Avatar and 
-open the Referral Source Maintenance form. Once the user clicks on 'OK' in this message box,
-the script will take over use of their computer. It uses the tab order of Avatar to navigate
-through the Referral Source Maintenance form so it requires that Avatar remain the active
-window throughout the automation process. This script will take around fifty-five seconds to
-enter in one referral source.
+After the script has run for a few seconds it will display a message box instructing the user
+to open Avatar and open the Referral Source Maintenance form. Once the user clicks on OK in
+this message box, the script will take over use of their computer. It uses the tab order of
+Avatar to navigate through the Referral Source Maintenance form so it requires that Avatar
+remain the active window throughout the automation process. This script will take around 
+fifty-five seconds to enter in one referral source.
 
 Once the script has completed the data entry it will display a message box informing the user
 that the process is complete. The user is now free to use their computer again.
@@ -65,14 +61,12 @@ MyDocuments\Windows PowerShell\WASP\ directory, copy the WASP.dll into the new d
 unblock the .dll so it can be used on the users system. It then imports the module to enable 
 PowerShell to use WASP commands.
 
-Next the script calls a function that creates an open file dialog. This is used so the user 
-can navigate through their filesystem to select the PF PM Data Collection Workbook that
-contains the list of referral sources they want to import. This was used so the user didn't
-have to manually type in the path to the workbook or have a path hard-coded into the script.
-If the user closes the open file dialog without making a selection or if the script can not
-open the selected file, the script will inform the user that the file could not be opened and
-it will exit safely. PowerShell won't care that the selected workbook is already open as it is
-only reading data from the workbook, not writing anything.
+Next the script opens the workbook from which the script was called. It knows the workbook 
+which opened it due to the script accepting a command line argument. When the script is called
+in VBA it is called with the full path of the workbook in which the 'Run 
+automated referral source entry' button was pressed. PowerShell doesn't care that the workbook
+is already open as it is only reading data from the workbook, not writing anything. If there
+is an error opening the workbook, the user will be informed and the script will exit safely.
 
 After the workbook has been opened the script will locate the macroReferral_Source worksheet.
 This sheet is generated during the validation process, which is one reason why the workbook
